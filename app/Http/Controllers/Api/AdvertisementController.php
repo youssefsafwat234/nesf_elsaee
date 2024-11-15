@@ -117,6 +117,7 @@ class AdvertisementController extends Controller
         try {
             $advertisements = Advertisement::where('city_id', $request->city_id)->get();
 
+            return  $advertisements->with('images');
             return response()->json(
                 [
                     'success' => true,
