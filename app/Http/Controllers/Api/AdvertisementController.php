@@ -120,7 +120,7 @@ class AdvertisementController extends Controller
             return response()->json(
                 [
                     'success' => true,
-                    'data' => $advertisements->with('images')
+                    'data' => $advertisements
                 ]
             );
         } catch (\Exception $e) {
