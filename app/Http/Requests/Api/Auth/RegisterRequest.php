@@ -31,7 +31,7 @@ class RegisterRequest extends FormRequest
 
             // For non-end users
             'subscriptionType' => ['in:شهري,سنوي', 'required_unless:accountType,مقدم خدمة,حساب مستخدم'],
-            'whatsapp_phone' => ['string', 'unique:users,whatsapp_phone', 'required_unless:accountType,حساب مستخدم',],
+            'whatsapp_phone' => ['string', 'unique:users,whatsapp_phone', 'required_unless:accountType,حساب مستخدم'],
             'logo' => ['image', 'required_unless:accountType,حساب مستخدم'], // logo can be nullable for freelancer],
             'city' => ['string', 'required_unless:accountType,حساب مستخدم',],
             'location' => ['string', 'required_unless:accountType,حساب مستخدم',],

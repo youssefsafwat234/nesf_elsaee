@@ -18,8 +18,11 @@ class RegisterController extends Controller
             );
 
 
+
             // for non end users
             if ($user->accountType != AccountTypeEnum::ENDUSER_ACCOUNT->value || $user->accountType != AccountTypeEnum::Service_Provider_Account->value) {
+                dd('yes');
+
                 $user->update($request->only('subscriptionType', 'whatsapp_phone', 'city', 'location', 'website_url',));
 
                 // for  logo, val_certification and  other_certifications files
@@ -43,6 +46,8 @@ class RegisterController extends Controller
                     $user->update(['commercial_register' => env('APP_URL') . '/' . 'public/attachments/' . $logoPath]);
                 }
             }
+
+
             // For freelancers only
             if ($user->accountType === AccountTypeEnum::FREELANCER_ACCOUNT->value || $user->accountType === AccountTypeEnum::Service_Provider_Account->value) {
                 $user->update($request->only('neighborhood'));
