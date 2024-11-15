@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\AdvertisementRequest;
+use App\Http\Requests\getAdvertisementsByCityRequest;
 use App\Models\Advertisement;
 use Illuminate\Http\Request;
 use function PHPUnit\Framework\matches;
@@ -108,6 +109,25 @@ class AdvertisementController extends Controller
         return response()->json(
             ['data' => $advertisements]
         );
+    }
+
+
+    function getAdvertisementsByCity(getAdvertisementsByCityRequest $request)
+    {
+        try {
+            $advertisements = Advertisement::where('city_id', $request->city_id)->get();
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'data' => $advertisements
+                ]
+            );
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => "There is an error please try again"], 500);
+        }
+
+
     }
 
 }
