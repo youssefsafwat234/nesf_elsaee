@@ -16,6 +16,7 @@ class ForgetPasswordController extends Controller
         $user->notify(new \App\Notifications\ForgetPasswordNotification());
 
         return response()->json([
+            'success' => true,
             'message' => 'تم إرسال الكود الخاص بتعيين كلمة المرور الجديدة  الى البريد الإلكتروني الخاص بيك'
         ]);
     }
