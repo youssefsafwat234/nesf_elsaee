@@ -21,6 +21,7 @@ class ResetPasswordController extends Controller
             $user->save();
             return response()->json(
                 [
+                    'success' => true,
                     'message' => 'تم تغيير الباسورد بنجاح'
                 ]
             );
@@ -29,6 +30,7 @@ class ResetPasswordController extends Controller
             $user = User::where('email', $request->email)->first();
             return response()->json(
                 [
+                    'success' => false,
                     'message' => 'الكود الذى ادخلته غير صحيح'
                 ]
             );
