@@ -115,9 +115,8 @@ class AdvertisementController extends Controller
     function getAdvertisementsByCity(getAdvertisementsByCityRequest $request)
     {
         try {
-            $advertisements = Advertisement::where('city_id', $request->city_id)->get();
+            $advertisements = Advertisement::where('city_id', $request->city_id)->with('images')->get();
 
-            return  $advertisements->with('images');
             return response()->json(
                 [
                     'success' => true,
