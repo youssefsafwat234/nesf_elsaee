@@ -22,9 +22,9 @@ class LoginController extends Controller
             return response()->json(['success' => false, 'message' => 'البريد الإلكتروني او كلمة المرور غير صحيحة'], 401);
         }
 
-        if ($user->tokens()->count() != 0) {
-            return response()->json(['success' => false, 'message' => 'تم تسجيل الدخول من هذا الحساب مستخدم من قبل جهاز اخر'], 401);
-        }
+//        if ($user->tokens()->count() != 0) {
+//            return response()->json(['success' => false, 'message' => 'تم تسجيل الدخول من هذا الحساب مستخدم من قبل جهاز اخر'], 401);
+//        }
 
         // Log in the authenticated user
         \Auth::login($user);
