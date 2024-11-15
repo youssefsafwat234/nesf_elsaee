@@ -36,9 +36,6 @@ class Advertisement extends Model
     {
         return $this->hasMany(Image::class);
     }
-    function getCreatedAtColumn($value)
-    {
-        return Carbon::parse($value)->toDateString();
-    }
+
 
 }
