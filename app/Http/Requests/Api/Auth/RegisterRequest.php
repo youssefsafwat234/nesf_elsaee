@@ -32,11 +32,13 @@ class RegisterRequest extends FormRequest
             // For non-end users
             'subscriptionType' => ['in:شهري,سنوي', 'required_unless:accountType,حساب مستخدم'],
             'whatsapp_phone' => ['string', 'unique:users,whatsapp_phone', 'required_unless:accountType,حساب مستخدم',],
-            'logo' => ['image', 'required_unless:accountType,مسوق عقاري,حساب مستخدم'], // logo can be nullable for freelancer],
+            'logo' => ['image', 'required_unless:accountType,حساب مستخدم'], // logo can be nullable for freelancer],
             'city' => ['string', 'required_unless:accountType,حساب مستخدم',],
             'location' => ['string', 'required_unless:accountType,حساب مستخدم',],
-            'val_certification' => ['file', 'required_unless:accountType,حساب مستخدم',],
-            'other_certifications' => ['file', 'required_unless:accountType,حساب مستخدم',],
+            // not for also service account
+            'val_certification' => ['file', 'required_unless:accountType,حساب مستخدم,مقدم خدمة',],
+            'other_certifications' => ['file', 'required_unless:accountType,حساب مستخدم,مقدم خدمة',],
+
             'website_url' => ['url', 'required_unless:accountType,حساب مستخدم',],
 
 
@@ -53,7 +55,7 @@ class RegisterRequest extends FormRequest
             'neighborhood' => ['string', 'required_if:accountType,مسوق عقاري,مقدم خدمة'],
 
             // for only service account
-            'service_type' => [ 'required_if:accountType,مقدم خدمة','string', 'in:صاحب عقار,مقاول'],
+            'service_type' => ['required_if:accountType,مقدم خدمة', 'string', 'in:صاحب عقار,مقاول'],
 
 
         ];

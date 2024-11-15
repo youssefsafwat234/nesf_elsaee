@@ -19,7 +19,7 @@ class RegisterController extends Controller
 
 
             // for non end users
-            if ($user->accountType != AccountTypeEnum::ENDUSER_ACCOUNT->value) {
+            if ($user->accountType != AccountTypeEnum::ENDUSER_ACCOUNT->value || $user->accountType != AccountTypeEnum::Service_Provider_Account) {
                 $user->update($request->only('subscriptionType', 'whatsapp_phone', 'city', 'location', 'website_url',));
 
                 // for  logo, val_certification and  other_certifications files
@@ -32,6 +32,8 @@ class RegisterController extends Controller
                     }
                 }
             }
+
+
             // For company and office users only
             if ($user->accountType == AccountTypeEnum::OFFICE_ACCOUNT->value || $user->accountType == AccountTypeEnum::COMPANY_ACCOUNT->value) {
                 $user->update($request->only('manager_name', 'social_media_url', 'twitter_url', 'instagram_url', 'snapchat_url', 'branches',));
@@ -49,6 +51,11 @@ class RegisterController extends Controller
             // for service accounts only
             if ($user->accountType === AccountTypeEnum::Service_Provider_Account->value) {
                 $user->update($request->only('service_type'));
+                if ($request->hasFile('logo')) {
+                    $logoName = $request->file('logo')->getClientOriginalName();
+                    $logoPath = $request->file('logo')->storeAs(\Str::plural('logo') . '/' . $user->id, $logoName, 'attachments');
+                    $user->update(['logo' => env('APP_URL') . '/' . 'public/attachments/' . $logoPath]);
+                }
             }
 
 
@@ -65,6 +72,7 @@ class RegisterController extends Controller
 
             // send response
             return response()->json([
+                'success' => true,
                 'message' => 'تم إنشاء المستخدم بنجاح',
                 'data' => $userAttributes,
                 'token' => $userToken,
