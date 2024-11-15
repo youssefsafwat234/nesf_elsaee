@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -34,6 +35,10 @@ class Advertisement extends Model
     public function images()
     {
         return $this->hasMany(Image::class);
+    }
+    function getCreatedAtColumn($value)
+    {
+        return Carbon::parse($value)->toDateString();
     }
 
 }
