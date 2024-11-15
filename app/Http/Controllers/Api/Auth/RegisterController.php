@@ -21,7 +21,6 @@ class RegisterController extends Controller
 
             // for non end users
             if ($user->accountType != AccountTypeEnum::ENDUSER_ACCOUNT->value || $user->accountType != AccountTypeEnum::Service_Provider_Account->value) {
-                dd('yes');
 
                 $user->update($request->only('subscriptionType', 'whatsapp_phone', 'city', 'location', 'website_url',));
 
