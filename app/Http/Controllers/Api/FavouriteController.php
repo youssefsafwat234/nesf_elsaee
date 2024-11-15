@@ -25,6 +25,7 @@ class FavouriteController extends Controller
 
         if ($favourites->contains('advertisement_id', $request->advertisement_id)) {
             return response()->json([
+                'success' => false,
                 'message' => 'الاعلان موجود فى المفضلة'
             ]);
         }
@@ -37,6 +38,7 @@ class FavouriteController extends Controller
         );
 
         return response()->json([
+            'success' => true,
             'message' => 'تمت الإضافة للمفضلة بنجاح'
         ]);
 
@@ -49,10 +51,12 @@ class FavouriteController extends Controller
         if ($favourite) {
             $favourite->deleteOrFail();
             return response()->json([
+                'success' => true,
                 'message' => 'تم حذف الإعلان من المفضلة بنجاح'
             ]);
         } else {
             return response()->json([
+                'success' => false,
                 'message' => 'الإعلان غير موجود فى المفضلة'
             ]);
         }
