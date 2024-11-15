@@ -125,7 +125,7 @@ class AdvertisementController extends Controller
                 ]
             );
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'error' => "There is an error please try again"], 500);
+            return response()->json(['success' => false, $e->getMessage()], 500);
         }
 
 
