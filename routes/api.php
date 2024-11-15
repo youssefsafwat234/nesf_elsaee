@@ -32,6 +32,8 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
     // ==================================================== advertisements ===================================================
     Route::post('advertisements', [\App\Http\Controllers\Api\AdvertisementController::class, 'store'])->name('advertisements.index');
     Route::get('advertisements/filter', [\App\Http\Controllers\Api\AdvertisementController::class, 'filter'])->name('advertisements.filter');
+    Route::post('advertisements/get-advertisements-by-city', [\App\Http\Controllers\Api\AdvertisementController::class, 'getAdvertisementsByCity'])->name('advertisements.getAdvertisementsByCity');
+
     // ==================================================== freelancers ===================================================
     Route::get('freelancers', [\App\Http\Controllers\Api\FreeLancerController::class, 'index'])->name('freelancers.index');
     // ==================================================== favorites ===================================================
