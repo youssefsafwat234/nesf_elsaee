@@ -9,7 +9,7 @@ class CityController extends Controller
 {
     public function index()
     {
-        $cities = \App\Models\City::select(['name', 'logo'])->get();
+        $cities = \App\Models\City::select(['id','name', 'logo'])->get();
 
         return response()->json([
             'data' => $cities,
