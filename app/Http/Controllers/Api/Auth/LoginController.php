@@ -35,6 +35,7 @@ class LoginController extends Controller
 
         // Send response with user details and token
         return response()->json([
+            'success' => true,
             'message' => 'تم تسجيل الدخول بنجاح',
             'user' => $user->only('name', 'email', 'password', 'phone', 'accountType', 'subscriptionType'),
             'token' => $token,
