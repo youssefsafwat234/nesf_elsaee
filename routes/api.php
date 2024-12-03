@@ -23,6 +23,9 @@ Route::post('auth/social-register', [\App\Http\Controllers\Api\Auth\SocialRegist
 Route::post('auth/forget-password', [\App\Http\Controllers\Api\Auth\ForgetPasswordController::class, 'forgetPassword'])->name('forget-password');
 Route::post('auth/reset-password', [\App\Http\Controllers\Api\Auth\ResetPasswordController::class, 'resetPassword'])->name('reset-password');
 Route::middleware('auth:sanctum')->name('api.')->group(function () {
+
+    // ==================================================== Cities ===================================================
+    Route::post('home', [\App\Http\Controllers\Api\HomeController::class, 'index'])->name('home');
     // ==================================================== Cities ===================================================
     Route::get('cities', [\App\Http\Controllers\Api\CityController::class, 'index'])->name('cities.index');
     // ==================================================== Categories ===================================================
@@ -57,6 +60,7 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
     Route::get('get-user-opinions', [\App\Http\Controllers\Api\OpinionController::class, 'getUserOpinions'])->name('opinions.getUserOpinions');
     // ==================================================== chats ===================================================
     Route::apiResource('chats', \App\Http\Controllers\Api\ChatController::class)->only(['index', 'show', 'store']);
+    Route::get('chat-users/get-all-users', [\App\Http\Controllers\Api\ChatController::class, 'getAllUsers'])->name('chats.getAllUsers');
     // ==================================================== chat Messages ===================================================
     Route::apiResource('chat-messages', \App\Http\Controllers\Api\ChatMessageController::class)->only(['index', 'store']);
 

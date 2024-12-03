@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Models\ChatMessage;
+use App\Models\ChatParticipant;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -46,7 +47,11 @@ class NewMessageSentEvent implements ShouldBroadcastNow
         return [
             'message' => $this->chatMessage->message,
             'sender' => $this->chatMessage->sender,
+            'media' => $this->chatMessage->media,
             'chat_id' => $this->chatMessage->chat_id,
+            'last_message_type' => $this->chatMessage->type,
+            'last_message_sender' => $this->chatMessage->sender_id,
+            'unseen_messages_count' => ChatParticipant::where('chat_id', $this->chatMessage->chat_id)->where('user_id', auth()->id())->first()->unseen_messages_count
         ];
     }
 }

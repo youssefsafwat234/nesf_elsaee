@@ -26,16 +26,18 @@ class SubscriptionResource extends Resource
     protected static ?string $navigationLabel = 'الاشتراكات';
     protected static ?string $navigationIcon = 'heroicon-o-document-currency-pound';
     protected static ?int $navigationSort = 7;
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::count();
     }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('type')
-                    ->label('النوع المستخدمين الخاصين بهذا الاشتراك')
+                    ->label('نوع المستخدمين الخاصين بهذا الاشتراك')
                     ->options(
                         [
                             AccountTypeEnum::COMPANY_ACCOUNT->value => AccountTypeEnum::COMPANY_ACCOUNT->value,
@@ -46,7 +48,9 @@ class SubscriptionResource extends Resource
                     )
                     ->required()
                 ,
-
+                Forms\Components\TextInput::make('name')
+                    ->label('اسم الاشتراك')
+                    ->string(),
                 Forms\Components\Toggle::make('status')
                     ->label('حالة الاشتراك')
                     ->required()
@@ -86,6 +90,10 @@ class SubscriptionResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('type')
                     ->label('النوع')  // "Type"
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('اسم الاشتراك')
                     ->searchable()
                     ->sortable(),
 

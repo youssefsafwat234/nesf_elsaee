@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->foreignId('chat_id')->constrained('chats')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->unique(['chat_id', 'user_id']);
+            $table->integer('unseen_messages_count')->default(0);
             $table->timestamps();
         });
     }

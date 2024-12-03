@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ChatMessage\GetChatMessagesRequest;
 use App\Http\Requests\Api\ChatMessage\StoreChatMessagesRequest;
 use App\Models\Chat;
+use App\Models\ChatMedia;
 use App\Models\ChatMessage;
 use App\Models\ChatParticipant;
 use Illuminate\Http\Request;
@@ -50,8 +51,7 @@ class ChatMessageController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public
-    function create()
+    public function create()
     {
         //
     }
@@ -62,8 +62,6 @@ class ChatMessageController extends Controller
     public
     function store(StoreChatMessagesRequest $request)
     {
-
-
         $data = $request->validated();
         $chatId = $data['chat_id'];
         $data['sender_id'] = auth()->id();
@@ -76,10 +74,19 @@ class ChatMessageController extends Controller
         }
         $chatMessage = ChatMessage::create($data);
 
+        if ($request->uploaded_files && count($request->uploaded_files) > 0) {
+            foreach ($request->uploaded_files as $file) {
+                $path = \Storage::disk('attachments')->putFile('chat_messages', $file);
+                ChatMedia::create([
+                    'chat_message_id' => $chatMessage->id,
+                    'url' => $path
+                ]);
+            }
+        }
         Chat::findOrFail($chatId)->update(['last_message_id' => $chatMessage->id]);
-
+        ChatParticipant::whereNot('user_id', auth()->id())->where('chat_id', $chatId)->first()->increment('unseen_messages_count');
+        $chatMessage->load('media');
         $this->sendMessageToOthers($chatMessage);
-
         $chatMessage->load('sender');
         return response()->json([
             'success' => true,
@@ -92,7 +99,6 @@ class ChatMessageController extends Controller
 
     function sendMessageToOthers(ChatMessage $chatMessage)
     {
-
         broadcast(new NewMessageSentEvent($chatMessage))->toOthers();
         return response()->json([
             'success' => true,

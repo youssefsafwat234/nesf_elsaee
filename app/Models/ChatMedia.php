@@ -5,17 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Subscription extends Model
+class ChatMedia extends Model
 {
     use HasFactory;
 
+
     protected $fillable = [
-        'type',
-        'status',
-        'price',
-        'subscription_type',
-        'advertisement_number',
-        'description',
-        'name',
+        'chat_message_id',
+        'url',
     ];
+
+    function getUrlAttribute($value)
+    {
+        return asset('attachments/' . $value);
+    }
 }

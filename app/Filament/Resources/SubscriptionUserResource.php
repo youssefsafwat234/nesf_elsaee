@@ -62,7 +62,7 @@ class SubscriptionUserResource extends Resource
                         }
                         return \App\Models\Subscription::where('type', $user->accountType)
                             ->where('status', true)
-                            ->pluck('id', 'id');
+                            ->pluck('name', 'id');
                     }),
                 TextInput::make('advertisement_count')
                     ->label('عدد الإعلانات')
@@ -74,10 +74,8 @@ class SubscriptionUserResource extends Resource
                         function (callable $get) {
                             $subscriptionId = $get('subscription_id');
                             if (!$subscriptionId) {
-                                return null; // لا يوجد حد أقصى إذا لم يتم اختيار الاشتراك.
+                                return null;
                             }
-
-                            // الحصول على عدد الإعلانات مباشرة.
                             $subscription = Subscription::find($subscriptionId);
                             return $subscription ? $subscription->advertisement_number : null;
                         }
@@ -102,7 +100,7 @@ class SubscriptionUserResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('user.name')->label('المستخدم'),
-                TextColumn::make('subscription.id')->label('الاشتراك'),
+                TextColumn::make('subscription.name')->label('الاشتراك'),
                 TextColumn::make('advertisement_count')->label('عدد الإعلانات'),
                 ToggleColumn::make('status')
                     ->label('الحالة')

@@ -24,6 +24,9 @@ class StoreChatMessagesRequest extends FormRequest
         return [
             'chat_id' => ['required', 'exists:chats,id'],
             'message' => ['required', 'string'],
+            'type' => ['required', 'string', 'in:text,image,video,file'],
+            'uploaded_files' => ['nullable', 'array'],
+            'uploaded_files.*' => ['nullable', 'file', 'mimes:jpg,jpeg,png,mp4,mov,ogg,webm,webp,pdf,doc,docx,xls,xlsx,ppt,pptx,txt,zip,rar,7z'],
         ];
     }
 }

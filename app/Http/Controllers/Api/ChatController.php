@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\AccountTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Chat;
 use App\Models\ChatParticipant;
@@ -10,9 +11,6 @@ use Illuminate\Http\Request;
 
 class ChatController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $chats = Chat::hasParticipants(auth()->id())
@@ -29,9 +27,6 @@ class ChatController extends Controller
             'message' => 'No chats found'], 404);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
@@ -81,7 +76,7 @@ class ChatController extends Controller
             ], 201);
         }
         return response()->json([
-            'success' => true,
+            'success' => false,
             'message' => 'Chat already exists',
             'data' => $previousChat->load('lastMessage.sender', 'participants.user', 'messages', 'lastMessage', 'messages.sender')
         ], 200);
@@ -94,6 +89,7 @@ class ChatController extends Controller
     {
         if (ChatParticipant::where('user_id', auth()->id())->exists()) {
             $chat->load('participants.user', 'messages', 'messages.sender', 'lastMessage', 'lastMessage.sender');
+            ChatParticipant::where('user_id', auth()->id())->where('chat_id', $chat->id)->first()->update(['unseen_messages_count' => 0]);
             return response()->json([
                 'success' => true,
                 'data' => $chat], 200);
@@ -136,5 +132,17 @@ class ChatController extends Controller
         })->first();
         return $chat;
 
+    }
+
+    function getAllUsers()
+    {
+        $users = User::whereIn('accountType', [AccountTypeEnum::COMPANY_ACCOUNT->value, AccountTypeEnum::OFFICE_ACCOUNT->value])->whereNot('id', auth()->id())->get();
+
+        return response()->json(
+            [
+                'success' => true,
+                'data' => $users
+            ], 200
+        );
     }
 }

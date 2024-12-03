@@ -12,8 +12,10 @@ class ChatMessage extends Model
     protected $fillable = [
         'chat_id',
         'sender_id',
-        'message'
+        'message',
+        'type',
     ];
+    protected $with = ['media'];
 
     public function sender()
     {
@@ -23,5 +25,10 @@ class ChatMessage extends Model
     public function chat()
     {
         return $this->belongsTo(Chat::class);
+    }
+
+    public function media()
+    {
+        return $this->hasMany(ChatMedia::class, 'chat_message_id');
     }
 }
