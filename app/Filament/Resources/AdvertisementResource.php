@@ -23,7 +23,7 @@ class AdvertisementResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $pluralModelLabel = 'الإعلانات';
     protected static ?string $modelLabel = 'إعلان';
-    protected static ?string $navigationGroup = 'الإعلانات';
+    protected static ?string $navigationGroup = 'الإعلانات والمزادات';
     protected static ?string $navigationLabel = 'الإعلانات';
     protected static ?int $navigationSort = 6;
     public static function getNavigationBadge(): ?string

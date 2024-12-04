@@ -32,3 +32,8 @@
 //Route::get('/contractors', [\App\Http\Controllers\Dashboard\UserController::class, 'getContractorAccounts']);
 //Route::resource('/users', \App\Http\Controllers\Dashboard\UserController::class);
 
+use Illuminate\Http\Request;
+
+Route::post('/broadcasting/auth', function (Request $request) {
+    return Broadcast::auth($request);
+});

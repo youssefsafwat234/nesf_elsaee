@@ -33,7 +33,7 @@ class NewMessageSentEvent implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         return [
-            new Channel('chat_' . $this->chatMessage->chat_id),
+            new PrivateChannel('chat_' . $this->chatMessage->chat_id),
         ];
     }
 

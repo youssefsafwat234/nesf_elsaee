@@ -63,6 +63,8 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
     Route::get('chat-users/get-all-users', [\App\Http\Controllers\Api\ChatController::class, 'getAllUsers'])->name('chats.getAllUsers');
     // ==================================================== chat Messages ===================================================
     Route::apiResource('chat-messages', \App\Http\Controllers\Api\ChatMessageController::class)->only(['index', 'store']);
+    // ==================================================== auctions ==================================================
+    Route::apiResource('auctions', \App\Http\Controllers\Api\AuctionController::class)->only(['store', 'index']);
 
 });
 // ==================================================== users that appear i the login page ===================================================

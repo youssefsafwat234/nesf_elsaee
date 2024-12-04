@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Resources\AdminResource;
+use App\Filament\Resources\AuctionResource;
 use App\Filament\Resources\CityResource;
 use Awcodes\FilamentQuickCreate\QuickCreatePlugin;
 use Awcodes\Overlook\OverlookPlugin;
@@ -39,7 +40,8 @@ class IdPanelProvider extends PanelProvider
                 \Hasnayeen\Themes\ThemesPlugin::make(),
                 QuickCreatePlugin::make()->excludes(
                     [
-                        CityResource::class
+                        CityResource::class,
+                        AuctionResource::class
                     ]
                 ),
                 FilamentApexChartsPlugin::make()

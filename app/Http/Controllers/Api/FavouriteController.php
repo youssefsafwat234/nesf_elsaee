@@ -68,9 +68,9 @@ class FavouriteController extends Controller
         $advertisement_ids = Favourite::where('user_id', auth()->user()->id)->pluck('advertisement_id');
         return response()->json(
             [
-                'success' => true ,
-                'data' => $favourites  ,
-                'advertisement_ids'=> $advertisement_ids
+                'success' => true,
+                'data' => $favourites,
+                'advertisement_ids' => $advertisement_ids
             ]
         );
     }
