@@ -96,7 +96,7 @@ class OfficeResource extends Resource
                                     return \App\Models\City::all()->pluck('name', 'name');
                                 })
                             ,
-                            Forms\Components\TextArea::make('location')
+                            Forms\Components\Textarea::make('location')
                                 ->label('الموقع')
                             ,
                             Forms\Components\TextInput::make('website_url')

@@ -34,6 +34,7 @@ class CompanyResource extends Resource
     protected static ?string $pluralModelLabel = 'الشركات العقارية';
     protected static ?string $modelLabel = 'شركة عقارية';
     protected static ?int $navigationSort = 2;
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::where('accountType', AccountTypeEnum::COMPANY_ACCOUNT->value)->count();
@@ -97,7 +98,7 @@ class CompanyResource extends Resource
                                     return \App\Models\City::all()->pluck('name', 'name');
                                 })
                             ,
-                            Forms\Components\TextArea::make('location')
+                            Forms\Components\Textarea::make('location')
                                 ->label('الموقع')
                             ,
                             Forms\Components\TextInput::make('website_url')
