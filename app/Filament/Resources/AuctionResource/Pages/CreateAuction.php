@@ -16,15 +16,26 @@ class CreateAuction extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
-        $record = Auction::create($data);
+        $record = Auction::create(
+            [
+                'user_id' => $data['user_id'],
+                'city_id' => $data['city_id'],
+                'video_path' => $data['video_path'],
+                'type' => $data['type'],
+                'area' => $data['area'],
+                'starting_date' => $data['starting_date'],
+                'ending_date' => $data['ending_date'],
+                'auction_link' => $data['auction_link'],
+                'notes' => $data['notes'],
+            ]
+        );
 
         $images = $data['images'];
         foreach ($images as $image) {
             $record->images()->create([
-                'path' => $image,
+                'image_path' => $image,
             ]);
         }
-
 
         return $record;
     }
@@ -38,7 +49,7 @@ class CreateAuction extends CreateRecord
     {
         return Notification::make()
             ->success()
-            ->title('الاعلانات')
-            ->body('تم انشاء الاعلان بنجاح');
+            ->title('المزادات')
+            ->body('تم انشاء المزاد بنجاح');
     }
 }

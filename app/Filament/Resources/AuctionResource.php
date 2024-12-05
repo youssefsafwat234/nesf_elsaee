@@ -87,6 +87,7 @@ class AuctionResource extends Resource
                                             Forms\Components\FileUpload::make('video_path')
                                                 ->label('فيديو المزاد')
                                                 ->directory('auctions/videos')
+                                                ->dehydrated(fn($state) => filled($state))
                                                 ->disk('attachments')
                                                 ->acceptedFileTypes(['video/mp4', 'video/x-ms-wmv', 'video/x-flv', 'video/quicktime', 'video/x-msvideo', 'video/x-matroska', 'video/x-ms-wmv', 'video/mpeg', 'video/3gpp', 'video/x-ms-asf', 'video/x-m4v', 'video/x-ms-wm', 'video/x-ms-wvx', 'video/avi', 'video/webm', 'video/ogg'])
                                                 ->required(fn(Page $livewire) => $livewire instanceof CreateRecord),
@@ -94,6 +95,7 @@ class AuctionResource extends Resource
                                             Forms\Components\FileUpload::make('images')
                                                 ->label('صور المزاد')
                                                 ->multiple()
+                                                ->dehydrated(fn($state) => filled($state))
                                                 ->directory('auctions/images')
                                                 ->disk('attachments')
                                                 ->maxFiles(10)
@@ -117,14 +119,20 @@ class AuctionResource extends Resource
                 TextColumn::make('starting_date')->label('تاريخ البدء')->date()->sortable(),
                 TextColumn::make('ending_date')->label('تاريخ الانتهاء')->date()->sortable(),
                 TextColumn::make('auction_link')->label('رابط المزاد')->url(fn($record) => $record->auction_link, true),
-                ImageColumn::make('images')->label('الصور')->circular()->stacked(),
+                ImageColumn::make('images.image_path')->label('الصور')->circular()->stacked(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('city_id')->label('المدينة')->relationship('city', 'name'),
-                Tables\Filters\SelectFilter::make('type')->label('نوع المزاد'),
+                Tables\Filters\SelectFilter::make('type')->label('نوع المزاد')->options(
+                    [
+                        'شراء' => 'شراء',
+                        'بيع' => 'بيع',
+                    ]
+                ),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

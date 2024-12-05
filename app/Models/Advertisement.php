@@ -37,6 +37,8 @@ class Advertisement extends Model
         'street_width',
         'surrounding_streets_number',
         'real_estate_front',
+        'status',
+        'pending_by'
     ];
 
     public function images()
@@ -72,6 +74,11 @@ class Advertisement extends Model
     public function getToAreaAttribute($value)
     {
         return (float)$value;
+    }
+
+    function order()
+    {
+        return $this->hasOne(Order::class);
     }
 
 

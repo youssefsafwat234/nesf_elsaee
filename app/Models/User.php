@@ -87,12 +87,15 @@ class User extends Authenticatable
         return asset('attachments/' . $value);
     }
 
-    function chats() : HasMany
+    function chats(): HasMany
     {
         return $this->hasMany(Chat::class);
     }
 
-
+    function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 
 
 }

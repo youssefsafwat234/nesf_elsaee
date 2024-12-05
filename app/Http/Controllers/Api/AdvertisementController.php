@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\AccountTypeEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\AdvertisementRequest;
+use App\Http\Requests\Api\NearestCompaniesAndOfficesRequest;
 use App\Http\Requests\getAdvertisementsByCityRequest;
 use App\Models\Advertisement;
 use App\Models\Category;
 use App\Models\City;
 use App\Models\Neighbourhood;
+use App\Models\User;
+use App\Traits\NearestAccounts;
 use Illuminate\Http\Request;
 use function PHPUnit\Framework\matches;
 
 class AdvertisementController extends Controller
 {
+    use  NearestAccounts;
+
     public function store(AdvertisementRequest $request)
     {
         $data = $request->validated();
@@ -151,6 +157,84 @@ class AdvertisementController extends Controller
             'categories' => $categories,
             'cities' => $cities,
             'neighbourhoods' => $neighbourhoods,
+        ]);
+
+    }
+
+
+    function userPurchaseDesired(Request $request)
+    {
+        $request->validate(
+            [
+                'city' => 'required',
+            ]
+        );
+        $nearestAccount = collect($this->getNearestOfficeOrCompanyAccount($request->city))->first();
+
+
+        return response()->json([
+            'success' => true,
+            'data' => $nearestAccount,
+        ]);
+    }
+
+    function getNearestOfficeOrCompanyAccount($city)
+    {
+        if (City::where('name', '=', $city)->exists()) {
+            $city = City::where('name', '=', $city)->first();
+        } else {
+            $city = City::first();
+        }
+        $object = User::where('accountType', AccountTypeEnum::OFFICE_ACCOUNT->value)->orWhere('accountType', AccountTypeEnum::COMPANY_ACCOUNT->value)->get();
+        $nearestAccounts = [];
+        $nearestOfficeAccountIds = $this->getNearestAccounts($city, $object);
+
+        if (count($nearestOfficeAccountIds) == 0) {
+            $nearestAccounts = User::where('accountType', AccountTypeEnum::OFFICE_ACCOUNT->value)->orWhere('accountType', AccountTypeEnum::COMPANY_ACCOUNT->value)->take(15)->get();
+        } else {
+            foreach ($nearestOfficeAccountIds as $nearestOfficeAccountId) {
+                $nearestAccounts[] = User::find($nearestOfficeAccountId);
+            }
+        }
+        return $nearestAccounts;
+    }
+
+
+    function companyOrOfficePurchaseDesired(Request $request)
+    {
+        $request->validate(
+            [
+                'advertisement_id' => 'required|exists:advertisements,id',
+            ]
+        );
+        $advertisement = Advertisement::findOrFail($request->advertisement_id);
+
+        if ($advertisement->status != 'مفعل') {
+            return response()->json([
+                'success' => false,
+                'message' => 'لا يمكنك اضافة الطلب لان الاعلان معلق او مكتمل'
+            ]);
+        }
+        // user must be  not (company or office)  == not company and not office
+        if (auth()->user()->accountType != AccountTypeEnum::COMPANY_ACCOUNT->value && auth()->user()->accountType != AccountTypeEnum::OFFICE_ACCOUNT->value) {
+            return response()->json([
+                'success' => false,
+                'message' => 'لا يمكنك اضافة الطلب لانك لست شركة او مكتب عقارى'
+            ]);
+        }
+
+        $advertisement->update([
+            'pending_by' => auth()->id(),
+            'status' => 'معلق',
+        ]);
+
+        $advertisement->order()->create([
+            'user_id' => auth()->id(),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'تم إضافة الإعلان الى قائمة الطلبات الخاصة بك بنجاح'
         ]);
 
     }

@@ -65,6 +65,13 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
     Route::apiResource('chat-messages', \App\Http\Controllers\Api\ChatMessageController::class)->only(['index', 'store']);
     // ==================================================== auctions ==================================================
     Route::apiResource('auctions', \App\Http\Controllers\Api\AuctionController::class)->only(['store', 'index']);
+    // ==================================================== purchaseDesired ==================================================
+    Route::post('user-purchase-desired', [\App\Http\Controllers\Api\AdvertisementController::class, 'userPurchaseDesired'])->name('advertisement.user-purchase-desired');
+    Route::post('company-or-office-purchase-desired', [\App\Http\Controllers\Api\AdvertisementController::class, 'companyOrOfficePurchaseDesired'])->name('advertisement.user-purchase-desired');
+    // ==================================================== orders ==================================================
+    Route::get('user/orders', [\App\Http\Controllers\Api\OrderController::class, 'index'])->name('user.orders');
+    Route::delete('user/orders/delete', [\App\Http\Controllers\Api\OrderController::class, 'destroy'])->name('user.orders.delete');
+
 
 });
 // ==================================================== users that appear i the login page ===================================================
