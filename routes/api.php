@@ -35,6 +35,7 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
     // ==================================================== advertisements ===================================================
     Route::post('advertisements', [\App\Http\Controllers\Api\AdvertisementController::class, 'store'])->name('advertisements.index');
     Route::post('advertisements/filter', [\App\Http\Controllers\Api\AdvertisementController::class, 'filter'])->name('advertisements.filter');
+    Route::post('advertisements/search', [\App\Http\Controllers\Api\AdvertisementController::class, 'search'])->name('advertisements.search');
     Route::get('advertisements/get-filter-data', [\App\Http\Controllers\Api\AdvertisementController::class, 'getFilterData'])->name('advertisements.get-filter-data');
     Route::get('advertisements/get-advertisements-by-city', [\App\Http\Controllers\Api\AdvertisementController::class, 'getAdvertisementsByCity'])->name('advertisements.getAdvertisementsByCity');
 

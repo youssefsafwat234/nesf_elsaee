@@ -17,14 +17,15 @@ class OpinionController extends Controller
                 'receiver_id' => 'required|exists:users,id',
                 'sender_id' => 'required|exists:users,id',
                 'advertisement_id' => 'required|exists:advertisements,id',
-            ], [
-                'receiver_id.required' => 'من فضلك ارسل المستخدم',
-                'receiver_id.exists' => 'المستخدم غير موجود',
-                'sender_id.required' => 'من فضلك ارسل الشركة او المكتب',
-                'sender_id.exists' => 'الشركة او المكتب غير موجود',
-                'advertisement_id.required' => 'من فضلك ارسل الإعلان',
-                'advertisement_id.exists' => 'الإعلان غير موجود',
-            ]
+            ],
+                [
+                    'receiver_id.required' => 'من فضلك ارسل المستخدم',
+                    'receiver_id.exists' => 'المستخدم غير موجود',
+                    'sender_id.required' => 'من فضلك ارسل الشركة او المكتب',
+                    'sender_id.exists' => 'الشركة او المكتب غير موجود',
+                    'advertisement_id.required' => 'من فضلك ارسل الإعلان',
+                    'advertisement_id.exists' => 'الإعلان غير موجود',
+                ]
             );
 
             $senderType = User::findOrFail($request->sender_id)->accountType;
@@ -53,9 +54,7 @@ class OpinionController extends Controller
                     'error' => 'لا يمكنك ارسال استطلاع الا اذا كنت مكتب عقارى أو شركة عقارية',
                 ], 403);
             }
-        }
-
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'message' => $e->getMessage(),
             ], 500);

@@ -239,4 +239,26 @@ class AdvertisementController extends Controller
 
     }
 
+
+    function search(Request $request)
+    {
+        $request->validate(
+            [
+                'search_input' => 'required|string',
+            ]
+        );
+
+        $query = Advertisement::where('advertisement_number', 'LIKE', '%' . $request->search_input . '%')
+            ->orWhere('description', 'LIKE', '%' . $request->search_input . '%')
+            ->with(['images', 'user', 'city', 'category', 'neighbourhood']);
+
+        $advertisements = $query->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $advertisements
+        ]);
+
+    }
+
 }

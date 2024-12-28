@@ -15,7 +15,7 @@ class Advertisement extends Model
         'city',
         'user',
         'category',
-        'neighbourhood'
+        'neighbourhood',
     ];
     public $fillable = [
         'user_id',
@@ -38,7 +38,8 @@ class Advertisement extends Model
         'surrounding_streets_number',
         'real_estate_front',
         'status',
-        'pending_by'
+        'pending_by',
+        'advertisement_number'
     ];
 
     public function images()
@@ -79,6 +80,18 @@ class Advertisement extends Model
     function order()
     {
         return $this->hasOne(Order::class);
+    }
+
+
+    protected static function booted()
+    {
+        static::creating(function ($advertisement) {
+            do {
+                $advertisement_number = 'adv-' . random_int(100000, 999999);
+            } while (self::where('advertisement_number', $advertisement_number)->exists());
+
+            $advertisement->advertisement_number = $advertisement_number;
+        });
     }
 
 
