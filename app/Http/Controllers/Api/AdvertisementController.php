@@ -148,6 +148,7 @@ class AdvertisementController extends Controller
         }
     }
 
+
     function getFilterData()
     {
         $categories = Category::all();
@@ -259,6 +260,31 @@ class AdvertisementController extends Controller
             'data' => $advertisements
         ]);
 
+    }
+
+
+    function getAdvertisementsForMap(Request $request)
+    {
+        if ($request->filled('city_id') && $request->city_id != "null") {
+            try {
+                $request->validate([
+                    'city_id' => 'required|exists:cities,id',
+                ]);
+            } catch (\Illuminate\Validation\ValidationException $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->validator->errors()->first()
+                ]);
+            }
+            $advertisements = Advertisement::where('city_id', $request->city_id)->with(['images', 'user', 'city', 'category', 'neighbourhood'])->get();
+        } else {
+            $advertisements = Advertisement::with(['images', 'user', 'city', 'category', 'neighbourhood'])->get();
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $advertisements,
+        ]);
     }
 
 }

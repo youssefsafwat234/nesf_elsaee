@@ -9,6 +9,7 @@ class Opinion extends Model
 {
     use HasFactory;
 
+    protected $with = ['sender', 'receiver', 'advertisement'];
     protected $fillable = [
         'advertisement_id',
         'sender_id',

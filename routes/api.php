@@ -38,7 +38,7 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
     Route::post('advertisements/search', [\App\Http\Controllers\Api\AdvertisementController::class, 'search'])->name('advertisements.search');
     Route::get('advertisements/get-filter-data', [\App\Http\Controllers\Api\AdvertisementController::class, 'getFilterData'])->name('advertisements.get-filter-data');
     Route::get('advertisements/get-advertisements-by-city', [\App\Http\Controllers\Api\AdvertisementController::class, 'getAdvertisementsByCity'])->name('advertisements.getAdvertisementsByCity');
-
+    Route::post('advertisements/get-advertisements-for-map', [\App\Http\Controllers\Api\AdvertisementController::class, 'getAdvertisementsForMap'])->name('advertisements.get-advertisements-for-map');
     // ==================================================== freelancers ===================================================
     Route::get('freelancers', [\App\Http\Controllers\Api\FreeLancerController::class, 'index'])->name('freelancers.index');
     // ==================================================== favorites ===================================================
@@ -49,7 +49,6 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
     Route::get('users/offices', [\App\Http\Controllers\Api\UserController::class, 'getAllOfficeAccounts'])->name('users.offices');
     Route::get('users/companies', [\App\Http\Controllers\Api\UserController::class, 'getAllCompanyAccounts'])->name('users.companies');
     Route::delete('users/destroy', [\App\Http\Controllers\Api\UserController::class, 'destroy'])->name('users.destroy');
-
     Route::get('users/nearest-offices', [\App\Http\Controllers\Api\UserController::class, 'getNearestOfficeAccounts'])->name('users.nearest-offices');
     Route::get('users/nearest-freelancers', [\App\Http\Controllers\Api\UserController::class, 'getNearestFreelancerAccounts'])->name('users.nearest-freelancers');
     Route::get('users/nearest-companies', [\App\Http\Controllers\Api\UserController::class, 'getNearestCompanyAccounts'])->name('users.nearest-companies');
@@ -59,6 +58,8 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
     Route::post('send-opinion', [\App\Http\Controllers\Api\OpinionController::class, 'sendOpinion'])->name('opinions.sendOpinion');
     Route::post('send-user-opinion-response', [\App\Http\Controllers\Api\OpinionController::class, 'sendOpinionResponse'])->name('opinions.sendOpinionResponse');
     Route::get('get-user-opinions', [\App\Http\Controllers\Api\OpinionController::class, 'getUserOpinions'])->name('opinions.getUserOpinions');
+    Route::get('get-user-opinions-for-company-or-office', [\App\Http\Controllers\Api\OpinionController::class, 'getUserOpinionsForCompanyOrOffice'])->name('opinions.getUserOpinionsForCompanyOrOffice');
+    Route::get('get-all-end-users', [\App\Http\Controllers\Api\OpinionController::class, 'getAllEndUsers'])->name('opinions.getAllEndUsers');
     // ==================================================== chats ===================================================
     Route::apiResource('chats', \App\Http\Controllers\Api\ChatController::class)->only(['index', 'show', 'store']);
     Route::get('chat-users/get-all-users', [\App\Http\Controllers\Api\ChatController::class, 'getAllUsers'])->name('chats.getAllUsers');
@@ -81,7 +82,8 @@ Route::get('users/engineerOfficeAccounts', [\App\Http\Controllers\Api\UserContro
 Route::get('users/contactorAccounts', [\App\Http\Controllers\Api\UserController::class, 'getContractorAccounts'])->name('users.contactorAccounts');
 // ==================================================== materials ===================================================
 Route::get('materials', [\App\Http\Controllers\Api\MaterialController::class, 'index'])->name('materials.index');
-
+// ==================================================== contact us ===================================================
+Route::get('contact-us', [\App\Http\Controllers\Api\ContactUsController::class, 'index'])->name('contact-us.index');
 
 Route::post('nafath / login', [\App\Http\Controllers\NafathController::class, 'sendLoginRequest']);
 
